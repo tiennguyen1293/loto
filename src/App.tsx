@@ -21,33 +21,15 @@ function randomIntFromInterval(min: number, max: number) {
   return Math.round(Math.random() * (max - min) + min)
 }
 
-function generateColumns(length: number, arraysExisting: number[][]) {
-  const array: number[] = []
+function generateNumber(min: number, max: number, times: number) {
+  let number = 0
+  let i = 0
 
-  while (array.length < length) {
-    const randomNumber = randomIntFromInterval(MIN_NUMBER, MAX_NUMBER)
-    const isExisting = [array, ...arraysExisting].some((array) =>
-      array.some((number: number) => number === randomNumber),
-    )
-
-    if (!isExisting) {
-      array.push(randomNumber)
-    }
+  while (number !== 0 || i >= times) {
+    number = randomIntFromInterval(min, max)
   }
 
-  return array.sort(comparator)
-}
-
-function generateLotoTicket(rows: number, columns: number) {
-  let arrays = []
-
-  for (let i = 0; i < rows; i++) {
-    const array: number[] = generateColumns(columns, arrays)
-
-    arrays.push(array)
-  }
-
-  return arrays
+  return number
 }
 
 function generateArrayNumbers(min: number, max: number, length: number) {
@@ -66,27 +48,21 @@ function generateArrayNumbers(min: number, max: number, length: number) {
 }
 
 function App() {
-  const numberList = generateArrayNumbers(1, 90, 81)
   const result = [
-    generateArrayNumbers(1, 9, randomIntFromInterval(4, 6)),
-    generateArrayNumbers(10, 19, randomIntFromInterval(4, 6)),
-    generateArrayNumbers(20, 29, randomIntFromInterval(4, 6)),
-    generateArrayNumbers(30, 39, randomIntFromInterval(4, 6)),
-    generateArrayNumbers(40, 49, randomIntFromInterval(4, 6)),
-    generateArrayNumbers(50, 59, randomIntFromInterval(4, 6)),
-    generateArrayNumbers(60, 69, randomIntFromInterval(4, 6)),
-    generateArrayNumbers(70, 79, randomIntFromInterval(4, 6)),
-    generateArrayNumbers(80, 90, randomIntFromInterval(4, 6)),
+    generateArrayNumbers(1, 9, 6),
+    generateArrayNumbers(10, 19, 6),
+    generateArrayNumbers(20, 29, 6),
+    generateArrayNumbers(30, 39, 6),
+    generateArrayNumbers(40, 49, 6),
+    generateArrayNumbers(50, 59, 6),
+    generateArrayNumbers(60, 69, 6),
+    generateArrayNumbers(70, 79, 6),
+    generateArrayNumbers(80, 90, 6),
   ]
-  const slots = Array(9)
-    .fill(Array(9).fill(0))
-    .map((array, rowIndex) => {
-      const row = result[rowIndex]
 
-      return array.map((number: number, index: number) => {
-        return row[index] ? row[index] : number
-      })
-    })
+  const slots = Array(9)
+    .fill(1)
+    .map((_, index) => result[index])
 
   console.log('=== slots', slots)
 
@@ -109,25 +85,36 @@ function App() {
       )}
 
       <div className={styles.main}>
-        {numberList.map((number) => (
-          <div
-            key={number}
-            className={cls({
-              [styles.number]: true,
-              // [styles.number10]: number > 0 && number < 10,
-              // [styles.number20]: number > 9 && number < 20,
-              // [styles.number30]: number > 19 && number < 30,
-              // [styles.number40]: number > 29 && number < 40,
-              // [styles.number50]: number > 39 && number < 50,
-              // [styles.number60]: number > 49 && number < 60,
-              // [styles.number70]: number > 59 && number < 70,
-              // [styles.number80]: number > 69 && number < 80,
-              // [styles.number90]: number > 79 && number <= 90,
-            })}
-          >
-            {number}
-          </div>
-        ))}
+        {slots.map((column, colIndex) => {
+          const arrayRandomIndex = generateArrayNumbers(0, 5, 4)
+          console.log('=== arrayRandomIndex', arrayRandomIndex)
+
+          return (
+            <div
+              key={colIndex}
+              data-index={`column-${colIndex}`}
+              className={cls({
+                [styles.column]: true,
+              })}
+            >
+              {column.map((number, numberIndex) => {
+                return (
+                  <div
+                    key={numberIndex}
+                    data-index={`number-${numberIndex}`}
+                    className={cls({
+                      [styles.number]: true,
+                    })}
+                  >
+                    <div className={styles.text}>
+                      {arrayRandomIndex.includes(numberIndex) ? 0 : number}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )
+        })}
       </div>
 
       <footer className={styles.footer}>Power by tiennm</footer>
