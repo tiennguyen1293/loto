@@ -1,0 +1,18 @@
+@import 'modern-normalize/modern-normalize.css';
+
+@import './styles/colors';
+
+html,
+body {
+  margin: 0;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+button {
+  cursor: pointer;
+}

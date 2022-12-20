@@ -1,0 +1,15 @@
+.app {
+  --radius-4: 4px;
+  --radius-8: 8px;
+  --shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+
+  &.light {
+    --primary-color: #0081ff;
+    --secondary-color: #5e81ac;
+  }
+
+  &.dark {
+    --primary-color: #0081ff;
+    --secondary-color: #5e81ac;
+  }
+}

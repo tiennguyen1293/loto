@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import cls from 'classnames'
-import reactLogo from './assets/react.svg'
+
+import { ReactComponent as ReactLogo } from './assets/react.svg'
+
 import styles from './App.module.scss'
 
 const MIN_NUMBER = 1
@@ -63,45 +65,73 @@ function generateArrayNumbers(min: number, max: number, length: number) {
   return array.sort(comparator)
 }
 
-console.log('===', [
-  generateArrayNumbers(1, 90, 81),
-  generateArrayNumbers(1, 9, randomIntFromInterval(4, 6)),
-  generateArrayNumbers(10, 19, randomIntFromInterval(4, 6)),
-  generateArrayNumbers(20, 29, randomIntFromInterval(4, 6)),
-  generateArrayNumbers(30, 39, randomIntFromInterval(4, 6)),
-  generateArrayNumbers(40, 49, randomIntFromInterval(4, 6)),
-  generateArrayNumbers(50, 59, randomIntFromInterval(4, 6)),
-  generateArrayNumbers(60, 69, randomIntFromInterval(4, 6)),
-  generateArrayNumbers(70, 79, randomIntFromInterval(4, 6)),
-  generateArrayNumbers(80, 90, randomIntFromInterval(4, 6)),
-])
-
 function App() {
-  return (
-    <div className={styles.app}>
-      <div>
-        <a href='https://vitejs.dev' target='_blank'>
-          <img src='/vite.svg' className={styles.logo} alt='Vite logo' />
-        </a>
-        <a href='https://reactjs.org' target='_blank'>
-          <img
-            src={reactLogo}
-            className={cls(styles.logo, styles.react)}
-            alt='React logo'
-          />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+  const numberList = generateArrayNumbers(1, 90, 81)
+  const result = [
+    generateArrayNumbers(1, 9, randomIntFromInterval(4, 6)),
+    generateArrayNumbers(10, 19, randomIntFromInterval(4, 6)),
+    generateArrayNumbers(20, 29, randomIntFromInterval(4, 6)),
+    generateArrayNumbers(30, 39, randomIntFromInterval(4, 6)),
+    generateArrayNumbers(40, 49, randomIntFromInterval(4, 6)),
+    generateArrayNumbers(50, 59, randomIntFromInterval(4, 6)),
+    generateArrayNumbers(60, 69, randomIntFromInterval(4, 6)),
+    generateArrayNumbers(70, 79, randomIntFromInterval(4, 6)),
+    generateArrayNumbers(80, 90, randomIntFromInterval(4, 6)),
+  ]
+  const slots = Array(9)
+    .fill(Array(9).fill(0))
+    .map((array, rowIndex) => {
+      const row = result[rowIndex]
 
-      <div className={styles.card}>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      return array.map((number: number, index: number) => {
+        return row[index] ? row[index] : number
+      })
+    })
+
+  console.log('=== slots', slots)
+
+  return (
+    <main className={cls(styles.wrapper, styles.light)}>
+      <header className={styles.header}>Header</header>
+
+      {false && (
+        <div>
+          <div>
+            <a href='https://vitejs.dev' target='_blank'>
+              <img src='/lucky.jpeg' className={styles.logo} alt='Vite logo' />
+            </a>
+          </div>
+
+          <button type='button' className={styles.button}>
+            Chơi
+          </button>
+        </div>
+      )}
+
+      <div className={styles.main}>
+        {numberList.map((number) => (
+          <div
+            key={number}
+            className={cls({
+              [styles.number]: true,
+              // [styles.number10]: number > 0 && number < 10,
+              // [styles.number20]: number > 9 && number < 20,
+              // [styles.number30]: number > 19 && number < 30,
+              // [styles.number40]: number > 29 && number < 40,
+              // [styles.number50]: number > 39 && number < 50,
+              // [styles.number60]: number > 49 && number < 60,
+              // [styles.number70]: number > 59 && number < 70,
+              // [styles.number80]: number > 69 && number < 80,
+              // [styles.number90]: number > 79 && number <= 90,
+            })}
+          >
+            {number}
+          </div>
+        ))}
       </div>
-      <p className={styles['read-the-docs']}>
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+
+      <footer className={styles.footer}>Power by tiennm</footer>
+    </main>
   )
 }
 
