@@ -5,6 +5,8 @@ body {
   margin: 0;
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
+  height: 100%;
+  width: 100%;
 }
 
 body::-webkit-scrollbar {
@@ -13,4 +15,9 @@ body::-webkit-scrollbar {
 
 button {
   cursor: pointer;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
 }

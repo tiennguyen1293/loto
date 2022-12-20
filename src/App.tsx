@@ -153,9 +153,7 @@ function App() {
   return (
     <main className={cls(styles.wrapper, styles.light)}>
       <header className={styles.header}>
-        <div>
-          <img src='/lucky.jpeg' className={styles.logo} alt='logo' />
-        </div>
+        <img src='/lucky.jpeg' className={styles.logo} alt='logo' />
 
         <div>
           <button
@@ -183,7 +181,6 @@ function App() {
               data-index={`row-${rowIndex}`}
               className={cls({
                 [styles.row]: true,
-                [styles['row-6']]: true,
               })}
             >
               {row.map((number, numberIndex) => {
@@ -196,9 +193,9 @@ function App() {
                       [styles[theme]]: !number,
                       [styles.selected]: numbersSelected.includes(number),
                     })}
-                    onClick={() => handleSelectNumber(number)}
+                    onClick={() => !!number && handleSelectNumber(number)}
                   >
-                    <div className={styles.text}>{number ? number : ' '}</div>
+                    <span className={styles.text}>{number ? number : ' '}</span>
                   </div>
                 )
               })}

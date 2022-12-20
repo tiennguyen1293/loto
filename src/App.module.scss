@@ -2,30 +2,22 @@
 
 .wrapper {
   position: relative;
-  height: 100vh;
-  width: 100vw;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-auto-rows: 64px auto 24px;
-  grid-template-areas:
-    'hd hd hd hd hd hd hd hd'
-    'main main main main main main main main'
-    'ft ft ft ft ft ft ft ft';
-
+  height: 100%;
+  width: 100%;
   background-color: var(--white);
+  overflow: hidden;
 }
 
 .header {
-  grid-area: hd;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 72px;
   padding: 8px 16px;
 }
 
 .logo {
-  height: 40px;
-  width: 40px;
+  height: 100%;
   border-radius: 4px;
 }
 
@@ -64,16 +56,19 @@
 }
 
 .footer {
-  grid-area: ft;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 72px;
 }
 
 // =============== TICKET =================
 
 .main {
-  grid-area: main;
+  display: grid;
+  height: calc(100% - 144px);
+  width: 100%;
+  grid-template-rows: 15% 15% 15% 15% 15% 15%;
 }
 
 .column {
@@ -86,11 +81,9 @@
   display: flex;
   align-items: center;
   max-width: 768px;
+  height: 100%;
+  width: 100%;
   margin: auto;
-}
-
-.row-6 {
-  height: calc(100% / 6);
 }
 
 .number {
@@ -155,6 +148,7 @@
   font-size: 2.2em;
   font-weight: 600;
   color: var(--black);
+  user-select: none;
 }
 
 .empty {
