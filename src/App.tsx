@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 import cls from 'classnames'
 
-import { ReactComponent as ReactLogo } from './assets/react.svg'
+import { ReactComponent as ReloadIcon } from './assets/reload-icon.svg'
+import { ReactComponent as SettingsIcon } from './assets/settings-icon.svg'
+
+import { Popup } from './components'
 
 import styles from './App.module.scss'
 
-const MIN_NUMBER = 1
-const MAX_NUMBER = 90
-
-const COLUMNS_DEFAULT = 5
-const ROWS_DEFAULT = 9
+const LOTO_TICKET = 'LOTO_TICKET'
+const NUMBER_SELECTED = 'NUMBER_SELECTED'
+const THEME = 'THEME'
 
 function comparator(a: any, b: any) {
   if (a < b) return -1
@@ -19,17 +20,6 @@ function comparator(a: any, b: any) {
 
 function randomIntFromInterval(min: number, max: number) {
   return Math.round(Math.random() * (max - min) + min)
-}
-
-function generateNumber(min: number, max: number, times: number) {
-  let number = 0
-  let i = 0
-
-  while (number !== 0 || i >= times) {
-    number = randomIntFromInterval(min, max)
-  }
-
-  return number
 }
 
 function generateArrayNumbers(min: number, max: number, length: number) {
@@ -47,8 +37,8 @@ function generateArrayNumbers(min: number, max: number, length: number) {
   return array.sort(comparator)
 }
 
-function App() {
-  const result = [
+function generateLotoTicket() {
+  const conditionsGenerate = [
     generateArrayNumbers(1, 9, 6),
     generateArrayNumbers(10, 19, 6),
     generateArrayNumbers(20, 29, 6),
@@ -60,55 +50,155 @@ function App() {
     generateArrayNumbers(80, 90, 6),
   ]
 
-  const slots = Array(9)
+  const generateNumbers = Array(9)
     .fill(1)
-    .map((_, index) => result[index])
+    .map((_, index) => conditionsGenerate[index])
 
-  console.log('=== slots', slots)
+  const transpose = (matrix: number[][]) => {
+    let [row] = matrix
+
+    return row.map((_, column) => matrix.map((row) => row[column]))
+  }
+
+  const transposeColumntoRow = transpose(generateNumbers)
+
+  return transposeColumntoRow.map((row) => {
+    const randomHidden = generateArrayNumbers(0, 8, 4)
+
+    return row.map((number, numberIndex) =>
+      randomHidden.includes(numberIndex) ? 0 : number,
+    )
+  })
+}
+
+function App() {
+  const [lotoTicketFinal, setLotoTicketFinal] = useState<number[][]>([])
+  const [numbersSelected, setNumbersSelected] = useState<number[]>([])
+  const [isShowPopup, setIsShowPopup] = useState(false)
+  const [isShowCustomColorPopup, setIsShowCustomColorPopup] = useState(false)
+  const [theme, setTheme] = useState('color-1')
+
+  const handleSelectNumber = (number: number) => {
+    const isExisting = numbersSelected.includes(number)
+    let result = [...numbersSelected]
+
+    if (isExisting) {
+      result = numbersSelected.filter(
+        (numberExisting) => numberExisting !== number,
+      )
+    } else {
+      result = [...numbersSelected, number]
+    }
+
+    setNumbersSelected(result)
+    localStorage.setItem(NUMBER_SELECTED, JSON.stringify(result))
+  }
+
+  const handleReGenerateLotoTicket = () => {
+    const newTicket = generateLotoTicket()
+
+    setLotoTicketFinal(newTicket)
+    localStorage.setItem(LOTO_TICKET, JSON.stringify(newTicket))
+
+    setNumbersSelected([])
+    localStorage.setItem(NUMBER_SELECTED, JSON.stringify([]))
+
+    setIsShowPopup(false)
+  }
+
+  const handleCloseSelectTheme = () => {
+    const themeDefault = localStorage.getItem(THEME)
+
+    if (themeDefault) {
+      setTheme(themeDefault)
+    }
+
+    setIsShowCustomColorPopup(false)
+  }
+
+  const handleSelectTheme = () => {
+    if (theme) {
+      localStorage.setItem(THEME, theme)
+    } else {
+      handleCloseSelectTheme()
+    }
+
+    setIsShowCustomColorPopup(false)
+  }
+
+  useEffect(() => {
+    const numberSelected = localStorage.getItem(NUMBER_SELECTED)
+    const ticketDefault = localStorage.getItem(LOTO_TICKET)
+    const themeDefault = localStorage.getItem(THEME)
+
+    if (ticketDefault) {
+      setLotoTicketFinal(JSON.parse(ticketDefault))
+    } else {
+      handleReGenerateLotoTicket()
+    }
+
+    if (numberSelected) {
+      setNumbersSelected(JSON.parse(numberSelected))
+    }
+
+    if (themeDefault) {
+      localStorage.setItem(THEME, themeDefault)
+
+      setTheme(themeDefault)
+    } else {
+      localStorage.setItem(THEME, 'color-1')
+    }
+  }, [])
 
   return (
     <main className={cls(styles.wrapper, styles.light)}>
-      <header className={styles.header}>Header</header>
-
-      {false && (
+      <header className={styles.header}>
         <div>
-          <div>
-            <a href='https://vitejs.dev' target='_blank'>
-              <img src='/lucky.jpeg' className={styles.logo} alt='Vite logo' />
-            </a>
-          </div>
+          <img src='/lucky.jpeg' className={styles.logo} alt='logo' />
+        </div>
 
-          <button type='button' className={styles.button}>
-            Chơi
+        <div>
+          <button
+            type='button'
+            className={cls(styles.button, styles.reloadButton)}
+            onClick={() => setIsShowPopup(true)}
+          >
+            <ReloadIcon />
+          </button>
+          <button
+            type='button'
+            className={cls(styles.button, styles.settingsButton)}
+            onClick={() => setIsShowCustomColorPopup(true)}
+          >
+            <SettingsIcon />
           </button>
         </div>
-      )}
+      </header>
 
       <div className={styles.main}>
-        {slots.map((column, colIndex) => {
-          const arrayRandomIndex = generateArrayNumbers(0, 5, 4)
-          console.log('=== arrayRandomIndex', arrayRandomIndex)
-
+        {lotoTicketFinal.map((row, rowIndex) => {
           return (
             <div
-              key={colIndex}
-              data-index={`column-${colIndex}`}
+              key={rowIndex}
+              data-index={`row-${rowIndex}`}
               className={cls({
-                [styles.column]: true,
+                [styles.row]: true,
+                [styles['row-6']]: true,
               })}
             >
-              {column.map((number, numberIndex) => {
+              {row.map((number, numberIndex) => {
                 return (
                   <div
                     key={numberIndex}
                     data-index={`number-${numberIndex}`}
                     className={cls({
                       [styles.number]: true,
+                      [styles[theme]]: !number,
+                      [styles.selected]: numbersSelected.includes(number),
                     })}
+                    onClick={() => handleSelectNumber(number)}
                   >
-                    <div className={styles.text}>
-                      {arrayRandomIndex.includes(numberIndex) ? 0 : number}
-                    </div>
+                    <div className={styles.text}>{number ? number : ' '}</div>
                   </div>
                 )
               })}
@@ -117,7 +207,42 @@ function App() {
         })}
       </div>
 
-      <footer className={styles.footer}>Power by tiennm</footer>
+      <footer className={styles.footer}>
+        <div>
+          <span>Power by tiennm</span>
+        </div>
+      </footer>
+
+      {isShowPopup && (
+        <Popup
+          isOpen={isShowPopup}
+          onClose={() => setIsShowPopup(false)}
+          onConfirm={handleReGenerateLotoTicket}
+        >
+          <span>Tạo mới vé khác?</span>
+        </Popup>
+      )}
+
+      {isShowCustomColorPopup && (
+        <Popup
+          isOpen={isShowCustomColorPopup}
+          onClose={handleCloseSelectTheme}
+          onConfirm={handleSelectTheme}
+        >
+          <div className={styles.wrapperColors}>
+            {[1, 2, 3, 4, 5, 6].map((colorNumber) => {
+              const themeNumber = `color-${colorNumber}`
+
+              return (
+                <div
+                  className={cls(styles.color, styles[themeNumber])}
+                  onClick={() => setTheme(themeNumber)}
+                />
+              )
+            })}
+          </div>
+        </Popup>
+      )}
     </main>
   )
 }

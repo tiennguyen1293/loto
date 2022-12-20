@@ -1,7 +1,16 @@
-.app {
-  --radius-4: 4px;
-  --radius-8: 8px;
+.wrapper {
+  --radius: 8px;
   --shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  --black: #333333;
+  --white: #eeeeee;
+  --selected: #a3be8c;
+
+  --color-1: #8fbcbb;
+  --color-2: #5e81ac;
+  --color-3: #bf616a;
+  --color-4: #d08770;
+  --color-5: #ebcb8b;
+  --color-6: #b48ead;
 
   &.light {
     --primary-color: #0081ff;
