@@ -12,6 +12,9 @@ const LOTO_TICKET = 'LOTO_TICKET'
 const NUMBER_SELECTED = 'NUMBER_SELECTED'
 const THEME = 'THEME'
 
+const COLUMN_LENGTH = 9
+const ROW_LENGTH = 6
+
 function comparator(a: any, b: any) {
   if (a < b) return -1
   if (a > b) return 1
@@ -37,33 +40,43 @@ function generateArrayNumbers(min: number, max: number, length: number) {
   return array.sort(comparator)
 }
 
-function generateLotoTicket() {
+function transpose(matrix: number[][]) {
+  let [row] = matrix
+
+  return row.map((_, column) => matrix.map((row) => row[column]))
+}
+
+function generateLotoTicket({
+  rows = ROW_LENGTH,
+  columns = COLUMN_LENGTH,
+}: {
+  rows: number
+  columns: number
+}) {
   const conditionsGenerate = [
-    generateArrayNumbers(1, 9, 6),
-    generateArrayNumbers(10, 19, 6),
-    generateArrayNumbers(20, 29, 6),
-    generateArrayNumbers(30, 39, 6),
-    generateArrayNumbers(40, 49, 6),
-    generateArrayNumbers(50, 59, 6),
-    generateArrayNumbers(60, 69, 6),
-    generateArrayNumbers(70, 79, 6),
-    generateArrayNumbers(80, 90, 6),
+    generateArrayNumbers(1, 9, rows),
+    generateArrayNumbers(10, 19, rows),
+    generateArrayNumbers(20, 29, rows),
+    generateArrayNumbers(30, 39, rows),
+    generateArrayNumbers(40, 49, rows),
+    generateArrayNumbers(50, 59, rows),
+    generateArrayNumbers(60, 69, rows),
+    generateArrayNumbers(70, 79, rows),
+    generateArrayNumbers(80, 90, rows),
   ]
 
-  const generateNumbers = Array(9)
+  const generateNumbers = Array(columns)
     .fill(1)
     .map((_, index) => conditionsGenerate[index])
 
-  const transpose = (matrix: number[][]) => {
-    let [row] = matrix
+  const transposeColumnToRow = transpose(generateNumbers)
 
-    return row.map((_, column) => matrix.map((row) => row[column]))
-  }
-
-  const transposeColumntoRow = transpose(generateNumbers)
-
-  return transposeColumntoRow.map((row) => {
-    const randomHidden = generateArrayNumbers(0, 8, 4)
+  return transposeColumnToRow.map((row) => {
+    const randomHidden = generateArrayNumbers(
+      0,
+      columns - 1,
+      columns === 9 ? 4 : 1,
+    )
 
     return row.map((number, numberIndex) =>
       randomHidden.includes(numberIndex) ? 0 : number,
@@ -94,11 +107,13 @@ function App() {
     localStorage.setItem(NUMBER_SELECTED, JSON.stringify(result))
   }
 
-  const handleReGenerateLotoTicket = () => {
-    const newTicket = generateLotoTicket()
+  const handleReGenerateLotoTicket = (isCreateNew: boolean = true) => {
+    const newTicket = generateLotoTicket({ rows: 6, columns: 9 })
 
-    setLotoTicketFinal(newTicket)
-    localStorage.setItem(LOTO_TICKET, JSON.stringify(newTicket))
+    if (isCreateNew) {
+      setLotoTicketFinal(newTicket)
+      localStorage.setItem(LOTO_TICKET, JSON.stringify(newTicket))
+    }
 
     setNumbersSelected([])
     localStorage.setItem(NUMBER_SELECTED, JSON.stringify([]))
@@ -214,9 +229,30 @@ function App() {
         <Popup
           isOpen={isShowPopup}
           onClose={() => setIsShowPopup(false)}
-          onConfirm={handleReGenerateLotoTicket}
+          isShowFooter={false}
         >
-          <span>Create a new ticket?</span>
+          <div className={styles.popupCustom}>
+            <div className={styles.popupContent}>
+              <span>Create a new ticket?</span>
+            </div>
+
+            <div className={styles.buttonsGroup}>
+              <button
+                type='button'
+                className={cls(styles.button, styles.okButton)}
+                onClick={() => handleReGenerateLotoTicket(false)}
+              >
+                Keep & Clean
+              </button>
+              <button
+                type='button'
+                className={cls(styles.button, styles.okButton)}
+                onClick={() => handleReGenerateLotoTicket()}
+              >
+                Create
+              </button>
+            </div>
+          </div>
         </Popup>
       )}
 

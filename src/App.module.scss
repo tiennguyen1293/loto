@@ -209,3 +209,29 @@
   color: var(--black);
   user-select: none;
 }
+
+// ======================
+
+.popupCustom {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.popupContent {
+  padding: 16px;
+  text-align: center;
+}
+
+.buttonsGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 0 16px;
+
+  button {
+    width: 50%;
+    border: 0;
+  }
+}
