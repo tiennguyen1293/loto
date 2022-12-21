@@ -37,7 +37,7 @@ function generateArrayNumbers(min: number, max: number, length: number) {
     }
   }
 
-  return array.sort(comparator)
+  return array
 }
 
 function transpose(matrix: number[][]) {
