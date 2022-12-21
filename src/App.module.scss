@@ -56,19 +56,35 @@
 }
 
 .footer {
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 72px;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 136px;
+
+  span {
+    position: relative;
+  }
+}
+
+.banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  background-image: url('/images/banner.webp');
+  background-size: cover;
 }
 
 // =============== TICKET =================
 
 .main {
-  display: grid;
-  height: calc(100% - 144px);
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 208px);
   width: 100%;
-  grid-template-rows: 15% 15% 15% 15% 15% 15%;
 }
 
 .column {
@@ -84,18 +100,6 @@
   height: 100%;
   width: 100%;
   margin: auto;
-}
-
-.number {
-  height: 100%;
-  width: 100%;
-  min-width: 40px;
-  min-height: 20%;
-  border: 1px solid var(--black);
-}
-
-.selected {
-  background-color: var(--selected);
 }
 
 .wrapperColors {
@@ -139,6 +143,61 @@
   background-color: var(--color-6);
 }
 
+.empty {
+  background-color: transparent;
+
+  &.color-1 {
+    background-color: var(--color-1);
+  }
+  &.color-2 {
+    background-color: var(--color-2);
+  }
+  &.color-3 {
+    background-color: var(--color-3);
+  }
+  &.color-4 {
+    background-color: var(--color-4);
+  }
+  &.color-5 {
+    background-color: var(--color-5);
+  }
+  &.color-6 {
+    background-color: var(--color-6);
+  }
+}
+
+.number {
+  height: 100%;
+  width: 100%;
+  min-width: 40px;
+  min-height: 20%;
+  border: 1px solid var(--black);
+  cursor: pointer;
+
+  background-color: transparent;
+}
+
+.selected {
+  &.color-1 {
+    background-color: var(--color-6);
+  }
+  &.color-2 {
+    background-color: var(--color-5);
+  }
+  &.color-3 {
+    background-color: var(--color-4);
+  }
+  &.color-4 {
+    background-color: var(--color-3);
+  }
+  &.color-5 {
+    background-color: var(--color-2);
+  }
+  &.color-6 {
+    background-color: var(--color-1);
+  }
+}
+
 .text {
   display: flex;
   justify-content: center;
@@ -149,8 +208,4 @@
   font-weight: 600;
   color: var(--black);
   user-select: none;
-}
-
-.empty {
-  background-color: var(--background-number);
 }

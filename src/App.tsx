@@ -153,7 +153,7 @@ function App() {
   return (
     <main className={cls(styles.wrapper, styles.light)}>
       <header className={styles.header}>
-        <img src='/lucky.jpeg' className={styles.logo} alt='logo' />
+        <img src='/images/lucky.jpeg' className={styles.logo} alt='logo' />
 
         <div>
           <button
@@ -190,7 +190,8 @@ function App() {
                     data-index={`number-${numberIndex}`}
                     className={cls({
                       [styles.number]: true,
-                      [styles[theme]]: !number,
+                      [styles[theme]]: true,
+                      [styles.empty]: !number,
                       [styles.selected]: numbersSelected.includes(number),
                     })}
                     onClick={() => !!number && handleSelectNumber(number)}
@@ -205,9 +206,8 @@ function App() {
       </div>
 
       <footer className={styles.footer}>
-        <div>
-          <span>Power by tiennm</span>
-        </div>
+        <div className={styles.banner} />
+        <span>Power by tiennm</span>
       </footer>
 
       {isShowPopup && (
@@ -216,13 +216,14 @@ function App() {
           onClose={() => setIsShowPopup(false)}
           onConfirm={handleReGenerateLotoTicket}
         >
-          <span>Tạo mới vé khác?</span>
+          <span>Create a new ticket?</span>
         </Popup>
       )}
 
       {isShowCustomColorPopup && (
         <Popup
           isOpen={isShowCustomColorPopup}
+          title={'Settings'}
           onClose={handleCloseSelectTheme}
           onConfirm={handleSelectTheme}
         >
@@ -232,6 +233,7 @@ function App() {
 
               return (
                 <div
+                  key={colorNumber}
                   className={cls(styles.color, styles[themeNumber])}
                   onClick={() => setTheme(themeNumber)}
                 />

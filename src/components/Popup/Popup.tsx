@@ -9,9 +9,17 @@ export const Popup: React.FunctionComponent<{
   isOpen: boolean
   children: any
   isShowFooter?: boolean
+  title?: string
   onClose: () => void
   onConfirm?: () => void
-}> = ({ isOpen, children, isShowFooter = true, onClose, onConfirm }) => {
+}> = ({
+  isOpen,
+  children,
+  title = 'Notification',
+  isShowFooter = true,
+  onClose,
+  onConfirm,
+}) => {
   if (!isOpen) {
     return null
   }
@@ -22,7 +30,7 @@ export const Popup: React.FunctionComponent<{
       <div className={styles.popupContainer}>
         <div className={styles.popupWrapper}>
           <div className={styles.popupHeader}>
-            <h3 className={styles.popupTitle}>Thông báo</h3>
+            <h3 className={styles.popupTitle}>{title}</h3>
 
             <button
               type='button'
