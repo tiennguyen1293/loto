@@ -8,7 +8,6 @@ import { Popup } from './components'
 
 import styles from './App.module.scss'
 
-const LOTO_TICKET = 'LOTO_TICKET'
 const NUMBER_SELECTED = 'NUMBER_SELECTED'
 const THEME = 'THEME'
 
@@ -112,7 +111,6 @@ function App() {
 
     if (isCreateNew) {
       setLotoTicketFinal(newTicket)
-      localStorage.setItem(LOTO_TICKET, JSON.stringify(newTicket))
     }
 
     setNumbersSelected([])
@@ -143,14 +141,9 @@ function App() {
 
   useEffect(() => {
     const numberSelected = localStorage.getItem(NUMBER_SELECTED)
-    const ticketDefault = localStorage.getItem(LOTO_TICKET)
     const themeDefault = localStorage.getItem(THEME)
 
-    if (ticketDefault) {
-      setLotoTicketFinal(JSON.parse(ticketDefault))
-    } else {
-      handleReGenerateLotoTicket()
-    }
+    handleReGenerateLotoTicket()
 
     if (numberSelected) {
       setNumbersSelected(JSON.parse(numberSelected))
