@@ -6,12 +6,11 @@ import { useCountDown } from '../../../../hooks'
 
 import styles from './Caller.module.scss'
 
-const CALL_TIME = 5
-
 export const Caller: React.FunctionComponent<{
   isReload: boolean
+  callCountDownTimes: number
   setIsReload: (isBoolean: boolean) => void
-}> = ({ isReload, setIsReload }) => {
+}> = ({ isReload, callCountDownTimes, setIsReload }) => {
   const [numbersToCall, setNumbersToCall] = useState<number[]>([])
   const [numberCalled, setNumberCalled] = useState<number[]>([])
   const [isStartedCall, setIsStartedCall] = useState(false)
@@ -26,7 +25,7 @@ export const Caller: React.FunctionComponent<{
     const number = numbersToCallUpdated.shift()
 
     if (!isStartedCall) {
-      startTimer(CALL_TIME)
+      startTimer(callCountDownTimes)
     }
 
     setIsStartedCall(true)
@@ -61,13 +60,13 @@ export const Caller: React.FunctionComponent<{
     }
 
     if (timer === 0) {
-      startTimer(CALL_TIME)
+      startTimer(callCountDownTimes)
     }
 
-    if (timer === CALL_TIME) {
+    if (timer === callCountDownTimes) {
       handleCallNewNumber()
     }
-  }, [isStartedCall, timer])
+  }, [isStartedCall, callCountDownTimes, timer])
 
   return (
     <div className={styles.caller}>

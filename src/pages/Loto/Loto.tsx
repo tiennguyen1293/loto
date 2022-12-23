@@ -13,23 +13,50 @@ import { Ticket, Caller } from './components'
 import styles from './Loto.module.scss'
 
 const THEME = 'THEME'
+const CALL_COUNT_DOWN = '5'
 
 const ROLE_TYPES = {
   PLAYER: 'PLAYER',
   CALLER: 'CALLER',
 }
 
+const SETTING_OPTION = {
+  SETTING_THEME: 'SETTING_THEME',
+  SETTING_CALLER: 'SETTING_CALLER',
+}
+
 export const Loto = () => {
   const [lotoTicketFinal, setLotoTicketFinal] = useState<number[][]>([])
   const [numbersSelected, setNumbersSelected] = useState<number[]>([])
   const [isShowReloadPopup, setIsShowReloadPopup] = useState(false)
-  const [isShowCustomColorPopup, setIsShowCustomColorPopup] = useState(false)
+  const [isShowSettingsPopup, setIsShowSettingsPopup] = useState(false)
   const [isShowBingo, setIsShowBingo] = useState(false)
   const [isShowRolePopup, setIsShowRolePopup] = useState(true)
   const [theme, setTheme] = useState('color-1')
   const [roleType, setRoleType] = useState('')
+  const [settingOptionSelected, setSettingOptionSelected] = useState('')
   const [isReload, setIsReload] = useState(false)
+  const [termCallCountDownTimes, setTermCallCountDownTimes] =
+    useState(CALL_COUNT_DOWN)
+  const [callCountDownTimes, setCallCountDownTimes] = useState(CALL_COUNT_DOWN)
   const isCaller = roleType === ROLE_TYPES.CALLER
+
+  let SETTING_OPTIONS = [
+    {
+      id: SETTING_OPTION.SETTING_THEME,
+      name: 'Themes',
+    },
+  ]
+
+  if (isCaller) {
+    SETTING_OPTIONS = [
+      ...SETTING_OPTIONS,
+      {
+        id: SETTING_OPTION.SETTING_CALLER,
+        name: 'Caller Settings',
+      },
+    ]
+  }
 
   const handleSelectNumber = (number: number) => {
     const isExisting = numbersSelected.includes(number)
@@ -69,24 +96,27 @@ export const Loto = () => {
     setIsReload(isCaller)
   }
 
-  const handleCloseSelectTheme = () => {
+  const handleCloseSettings = () => {
     const themeDefault = localStorage.getItem(THEME)
 
     if (themeDefault) {
       setTheme(themeDefault)
     }
 
-    setIsShowCustomColorPopup(false)
+    setIsShowSettingsPopup(false)
+    setSettingOptionSelected('')
   }
 
-  const handleSelectTheme = () => {
-    if (theme) {
-      localStorage.setItem(THEME, theme)
-    } else {
-      handleCloseSelectTheme()
-    }
+  const handleConfirmSettings = () => {
+    const themeDefault = localStorage.getItem(THEME)
 
-    setIsShowCustomColorPopup(false)
+    theme !== themeDefault && localStorage.setItem(THEME, theme)
+
+    termCallCountDownTimes !== CALL_COUNT_DOWN &&
+      setCallCountDownTimes(termCallCountDownTimes)
+
+    setIsShowSettingsPopup(false)
+    setSettingOptionSelected('')
   }
 
   const handleSelectRole = (roleType: string) => {
@@ -124,7 +154,7 @@ export const Loto = () => {
           <button
             type='button'
             className={cls(styles.button, styles.settingsButton)}
-            onClick={() => setIsShowCustomColorPopup(true)}
+            onClick={() => setIsShowSettingsPopup(true)}
           >
             <SettingsIcon />
           </button>
@@ -140,7 +170,13 @@ export const Loto = () => {
           onSelect={handleSelectNumber}
         />
 
-        {isCaller && <Caller isReload={isReload} setIsReload={setIsReload} />}
+        {isCaller && (
+          <Caller
+            isReload={isReload}
+            setIsReload={setIsReload}
+            callCountDownTimes={Number(callCountDownTimes)}
+          />
+        )}
       </div>
 
       <footer className={styles.footer}>
@@ -241,29 +277,60 @@ export const Loto = () => {
         </Popup>
       )}
 
-      {isShowCustomColorPopup && (
+      {isShowSettingsPopup && (
         <Popup
-          isOpen={isShowCustomColorPopup}
+          isOpen={isShowSettingsPopup}
           title={'Settings'}
-          onClose={handleCloseSelectTheme}
-          onConfirm={handleSelectTheme}
+          onClose={handleCloseSettings}
+          onConfirm={handleConfirmSettings}
         >
-          <div className={styles.wrapperColors}>
-            {[1, 2, 3, 4, 5, 6].map((colorNumber) => {
-              const themeNumber = `color-${colorNumber}`
+          <div className={styles.wrapperSettings}>
+            {!settingOptionSelected &&
+              SETTING_OPTIONS.map((option) => {
+                return (
+                  <button
+                    key={option.id}
+                    type='button'
+                    className={styles.button}
+                    onClick={() => setSettingOptionSelected(option.id)}
+                  >
+                    {option.name}
+                  </button>
+                )
+              })}
 
-              return (
-                <div
-                  key={colorNumber}
-                  className={cls(
-                    styles.color,
-                    styles[themeNumber],
-                    theme === themeNumber && styles.colorSelected,
-                  )}
-                  onClick={() => setTheme(themeNumber)}
+            {settingOptionSelected === SETTING_OPTION.SETTING_THEME && (
+              <>
+                {[1, 2, 3, 4, 5, 6].map((colorNumber) => {
+                  const themeNumber = `color-${colorNumber}`
+
+                  return (
+                    <div
+                      key={colorNumber}
+                      className={cls(
+                        styles.color,
+                        styles[themeNumber],
+                        theme === themeNumber && styles.colorSelected,
+                      )}
+                      onClick={() => setTheme(themeNumber)}
+                    />
+                  )
+                })}
+              </>
+            )}
+
+            {settingOptionSelected === SETTING_OPTION.SETTING_CALLER && (
+              <>
+                <input
+                  type='number'
+                  className={cls(styles.input)}
+                  value={termCallCountDownTimes}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setTermCallCountDownTimes(e.target.value)
+                  }
                 />
-              )
-            })}
+              </>
+            )}
           </div>
         </Popup>
       )}
