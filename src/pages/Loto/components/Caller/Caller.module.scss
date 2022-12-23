@@ -1,0 +1,63 @@
+.caller {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+}
+
+.callerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.callerTitle {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.callerNumbers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.callerNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  width: 44px;
+  margin: 4px;
+  font-size: 26px;
+  color: var(--white);
+  border-radius: 50%;
+  background-color: var(--secondary-color);
+}
+
+.justCalled {
+  background-color: var(--primary-color);
+}
+
+.button {
+  width: 120px;
+  padding: 8px 16px;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--radius);
+  font-size: 18px;
+  color: var(--primary-color);
+  background-color: transparent;
+
+  &:active {
+    border-color: var(--black);
+    color: var(--white);
+    background-color: var(--black);
+  }
+}
+
+@media screen and (min-width: 468px) {
+  .caller {
+    width: 40%;
+  }
+}

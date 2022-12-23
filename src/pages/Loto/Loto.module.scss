@@ -1,0 +1,213 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  padding: 8px 16px;
+}
+
+.logo {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.button {
+  padding: 8px 16px;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--radius);
+  font-size: 18px;
+  color: var(--primary-color);
+  background-color: transparent;
+
+  path {
+    fill: var(--black);
+  }
+
+  &:active {
+    border-color: var(--black);
+    color: var(--white);
+    background-color: var(--black);
+
+    path {
+      fill: var(--white);
+    }
+  }
+}
+
+.reloadButton {
+  padding: 8px 32px;
+  margin-right: 16px;
+  border: 2px solid var(--black);
+}
+
+.settingsButton {
+  padding: 8px;
+  border: 0;
+}
+
+.footer {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 136px;
+
+  span {
+    position: relative;
+    margin-right: 16px;
+  }
+}
+
+.banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  background-image: url('/images/banner.webp');
+  background-size: cover;
+}
+
+.qrCode {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 80px;
+  width: 80px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+// =============== TICKET =================
+
+.body {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: calc(100% - 208px);
+  width: 100%;
+}
+
+// ======================
+
+.caller {
+  flex-grow: 1;
+  max-width: 40%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+}
+
+.callerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.callerTitle {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.callerNumbers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.callerNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  width: 48px;
+  margin: 1px;
+  font-size: 28px;
+  color: var(--white);
+  border-radius: 50%;
+  background-color: var(--primary-color);
+}
+
+// ======================
+
+.popupCustom {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.popupContent {
+  padding: 16px;
+  text-align: center;
+}
+
+.buttonsGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 0 16px;
+
+  button {
+    width: 50%;
+    border: 0;
+  }
+}
+
+.roleButton {
+  width: 80%;
+  padding: 14px;
+  margin: 8px auto;
+}
+
+.wrapperColors {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: center;
+  width: 80%;
+}
+
+.color {
+  height: 40px;
+  width: 100%;
+  margin: 8px;
+  border-radius: var(--radius);
+  border: 2px solid transparent;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:active {
+    border-color: var(--primary-color);
+    box-shadow: inset 2px 0 0 0 white;
+  }
+}
+
+.color-1 {
+  background-color: var(--color-1);
+}
+.color-2 {
+  background-color: var(--color-2);
+}
+.color-3 {
+  background-color: var(--color-3);
+}
+.color-4 {
+  background-color: var(--color-4);
+}
+.color-5 {
+  background-color: var(--color-5);
+}
+.color-6 {
+  background-color: var(--color-6);
+}
+
+.colorSelected {
+  border: 2px solid var(--primary-color);
+}

@@ -1,0 +1,101 @@
+.ticket {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 768px;
+}
+
+.haveCaller {
+  display: none;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.empty {
+  background-color: transparent;
+
+  &.color-1 {
+    background-color: var(--color-1);
+  }
+  &.color-2 {
+    background-color: var(--color-2);
+  }
+  &.color-3 {
+    background-color: var(--color-3);
+  }
+  &.color-4 {
+    background-color: var(--color-4);
+  }
+  &.color-5 {
+    background-color: var(--color-5);
+  }
+  &.color-6 {
+    background-color: var(--color-6);
+  }
+}
+
+.number {
+  height: 100%;
+  width: 100%;
+  min-width: 40px;
+  min-height: 20%;
+  border: 1px solid var(--black);
+  cursor: pointer;
+
+  background-color: transparent;
+}
+
+.selected {
+  &.color-1 {
+    background-color: var(--color-6);
+  }
+  &.color-2 {
+    background-color: var(--color-5);
+  }
+  &.color-3 {
+    background-color: var(--color-4);
+  }
+  &.color-4 {
+    background-color: var(--color-3);
+  }
+  &.color-5 {
+    background-color: var(--color-2);
+  }
+  &.color-6 {
+    background-color: var(--color-1);
+  }
+}
+
+.text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  font-size: 2.2em;
+  font-weight: 600;
+  color: var(--black);
+  user-select: none;
+}
+
+@media screen and (min-width: 468px) {
+  .ticket {
+    width: 60%;
+  }
+
+  .haveCaller {
+    display: flex;
+  }
+}
