@@ -13,7 +13,7 @@ const NUMBER_SELECTED = 'NUMBER_SELECTED'
 const THEME = 'THEME'
 
 const COLUMN_LENGTH = 9
-const ROW_LENGTH = 6
+const ROW_LENGTH = 9
 
 function comparator(a: any, b: any) {
   if (a < b) return -1
@@ -108,7 +108,7 @@ function App() {
   }
 
   const handleReGenerateLotoTicket = (isCreateNew: boolean = true) => {
-    const newTicket = generateLotoTicket({ rows: 6, columns: 9 })
+    const newTicket = generateLotoTicket({ rows: 9, columns: 9 })
 
     if (isCreateNew) {
       setLotoTicketFinal(newTicket)
