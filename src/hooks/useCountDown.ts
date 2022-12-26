@@ -10,7 +10,7 @@ export const useCountDown = ({
   stopTimer: () => void
 } => {
   const [timer, setTimer] = useState(start || 0)
-  const intervalRef = useRef<NodeJS.Timer>()
+  const intervalRef = useRef<any>()
 
   const stopTimer = () => {
     intervalRef.current && clearInterval(intervalRef.current)
