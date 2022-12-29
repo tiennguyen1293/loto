@@ -162,6 +162,15 @@ export const Loto = () => {
       </header>
 
       <div className={styles.body}>
+        {isCaller && (
+          <Caller
+            isReload={isReload}
+            setIsReload={setIsReload}
+            handleSelectNumber={handleSelectNumber}
+            callCountDownTimes={Number(callCountDownTimes)}
+          />
+        )}
+
         <Ticket
           isCaller={isCaller}
           numbers={lotoTicketFinal}
@@ -169,14 +178,6 @@ export const Loto = () => {
           theme={theme}
           onSelect={handleSelectNumber}
         />
-
-        {isCaller && (
-          <Caller
-            isReload={isReload}
-            setIsReload={setIsReload}
-            callCountDownTimes={Number(callCountDownTimes)}
-          />
-        )}
       </div>
 
       <footer className={styles.footer}>

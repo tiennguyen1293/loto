@@ -56,8 +56,8 @@
   position: relative;
   display: flex;
   align-items: flex-end;
-  justify-content: flex-end;
-  height: 136px;
+  justify-content: center;
+  height: 80px;
 
   span {
     position: relative;
@@ -89,14 +89,16 @@
     height: 100%;
   }
 }
+
 // =============== TICKET =================
 
 .body {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  height: calc(100% - 208px);
+  height: calc(100% - 152px);
   width: 100%;
 }
 
@@ -223,4 +225,10 @@
 
 .colorSelected {
   border: 2px solid var(--primary-color);
+}
+
+@media screen and (min-width: 468px) {
+  .body {
+    flex-direction: row;
+  }
 }

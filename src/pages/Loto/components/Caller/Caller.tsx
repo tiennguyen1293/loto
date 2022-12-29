@@ -3,14 +3,16 @@ import cls from 'classnames'
 
 import { generateArrayNumbers } from '../../../../utils'
 import { useCountDown } from '../../../../hooks'
+import { ReactComponent as PlayIcon } from '../../../../assets/play-icon.svg'
 
 import styles from './Caller.module.scss'
 
 export const Caller: React.FunctionComponent<{
   isReload: boolean
   callCountDownTimes: number
+  handleSelectNumber: (number: number) => void
   setIsReload: (isBoolean: boolean) => void
-}> = ({ isReload, callCountDownTimes, setIsReload }) => {
+}> = ({ isReload, callCountDownTimes, handleSelectNumber, setIsReload }) => {
   const [numbersToCall, setNumbersToCall] = useState<number[]>([])
   const [numberCalled, setNumberCalled] = useState<number[]>([])
   const [isStartedCall, setIsStartedCall] = useState(false)
@@ -22,16 +24,17 @@ export const Caller: React.FunctionComponent<{
 
   const handleCallNewNumber = () => {
     const numbersToCallUpdated = [...numbersToCall]
-    const number = numbersToCallUpdated.shift()
 
     if (!isStartedCall) {
       startTimer(callCountDownTimes)
     }
 
     setIsStartedCall(true)
+    const number = numbersToCallUpdated.shift()
 
     if (isStartedCall && number) {
-      setNumberCalled([...numberCalled, number])
+      setNumberCalled([number, ...numberCalled])
+      handleSelectNumber(number)
       setNumbersToCall(numbersToCallUpdated)
     }
   }
@@ -78,7 +81,7 @@ export const Caller: React.FunctionComponent<{
           className={styles.button}
           onClick={isStartedCall ? handlePauseCall : handleCallNewNumber}
         >
-          {isStartedCall ? timer + 's' : 'Call'}
+          {isStartedCall ? timer + 's' : <PlayIcon />}
         </button>
       </div>
       <div className={styles.callerNumbers}>
@@ -88,15 +91,14 @@ export const Caller: React.FunctionComponent<{
               key={number}
               className={cls({
                 [styles.callerNumber]: true,
-                [styles.justCalled]:
-                  number === numberCalled[numberCalled.length - 1],
+                [styles.justCalled]: number === numberCalled[0],
               })}
             >
               {number}
             </div>
           ))
         ) : (
-          <div>{'Please click on "Call" button to generate a number'}</div>
+          <div>{'Please click on play button to generate a number'}</div>
         )}
       </div>
     </div>

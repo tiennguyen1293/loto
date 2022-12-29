@@ -2,13 +2,13 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0 16px;
 }
 
 .callerHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 16px;
   margin-bottom: 16px;
 }
 
@@ -19,18 +19,22 @@
 
 .callerNumbers {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
+  min-height: 60px;
+  padding: 0 16px;
+  padding-bottom: 16px;
+  overflow: auto;
 }
 
 .callerNumber {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 44px;
-  width: 44px;
+  height: 36px;
+  width: 36px;
+  font-size: 22px;
   margin: 4px;
-  font-size: 26px;
   color: var(--white);
   border-radius: 50%;
   background-color: var(--secondary-color);
@@ -41,7 +45,11 @@
 }
 
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 120px;
+  height: 40px;
   padding: 8px 16px;
   border: 2px solid var(--primary-color);
   border-radius: var(--radius);
@@ -49,15 +57,40 @@
   color: var(--primary-color);
   background-color: transparent;
 
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  path {
+    stroke: var(--primary-color);
+    fill: var(--primary-color);
+  }
+
   &:active {
     border-color: var(--black);
     color: var(--white);
     background-color: var(--black);
+
+    path {
+      stroke: var(--white);
+      fill: var(--white);
+    }
   }
 }
 
 @media screen and (min-width: 468px) {
   .caller {
     width: 40%;
+  }
+
+  .callerNumbers {
+    flex-wrap: wrap;
+  }
+
+  .callerNumber {
+    height: 44px;
+    width: 44px;
+    font-size: 26px;
   }
 }
