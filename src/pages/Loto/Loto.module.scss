@@ -34,11 +34,21 @@
   }
 }
 
-.input {
-  width: 100%;
-  padding: 8px 16px;
-  border: 1px solid var(--primary-color);
-  border-radius: var(--radius);
+.inputWrapper {
+  position: relative;
+
+  .label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+
+  .input {
+    width: 100%;
+    padding: 8px 16px;
+    border: 1px solid var(--primary-color);
+    border-radius: var(--radius);
+  }
 }
 
 .reloadButton {
@@ -186,6 +196,21 @@
     width: 100%;
     padding: 14px;
     margin: 8px;
+  }
+}
+
+.languages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .selected {
+    user-select: none;
+    pointer-events: none;
+    border: 0;
+
+    color: var(--white);
+    background-color: var(--primary-color);
   }
 }
 

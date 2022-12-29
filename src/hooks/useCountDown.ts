@@ -12,7 +12,7 @@ export const useCountDown = ({
   stopTimer: () => void
 } => {
   const [timer, setTimer] = useState(start || 0)
-  const [isPaused, setIsPaused] = useState(false)
+  const [isPaused, setIsPaused] = useState(true)
   const intervalRef = useRef<any>()
 
   const stopTimer = () => {
@@ -31,8 +31,6 @@ export const useCountDown = ({
   useEffect(() => {
     if (timer <= 0 || isPaused) return stopTimer()
 
-    console.log('=== timer', timer)
-    console.log('=== isPaused', isPaused)
     intervalRef.current = setInterval(() => {
       setTimer((t) => t - 1)
     }, 1000)

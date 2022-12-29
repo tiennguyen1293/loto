@@ -2,17 +2,25 @@ import { useEffect, useState } from 'react'
 import cls from 'classnames'
 
 import { generateArrayNumbers } from '../../../../utils'
+import { speakValue } from '../../../../utils/voices'
 import { useCountDown } from '../../../../hooks'
 import { ReactComponent as PlayIcon } from '../../../../assets/play-icon.svg'
 
 import styles from './Caller.module.scss'
 
 export const Caller: React.FunctionComponent<{
+  language: string
   isReload: boolean
   callCountDownTimes: number
   handleSelectNumber: (number: number) => void
   setIsReload: (isBoolean: boolean) => void
-}> = ({ isReload, callCountDownTimes, handleSelectNumber, setIsReload }) => {
+}> = ({
+  language,
+  isReload,
+  callCountDownTimes,
+  handleSelectNumber,
+  setIsReload,
+}) => {
   const [numbersToCall, setNumbersToCall] = useState<number[]>([])
   const [numberCalled, setNumberCalled] = useState<number[]>([])
   const [isStartedCall, setIsStartedCall] = useState(false)
@@ -36,6 +44,10 @@ export const Caller: React.FunctionComponent<{
     const number = numbersToCallUpdated.shift()
 
     if (isStartedCall && number) {
+      speakValue({
+        value: String(number),
+        language,
+      })
       setNumberCalled([number, ...numberCalled])
       handleSelectNumber(number)
       setNumbersToCall(numbersToCallUpdated)

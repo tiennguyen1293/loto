@@ -5,7 +5,9 @@ import { ReactComponent as ReloadIcon } from '../../assets/reload-icon.svg'
 import { ReactComponent as SettingsIcon } from '../../assets/settings-icon.svg'
 import { ReactComponent as QRCode } from '../../assets/qr-code.svg'
 
+import { ROLE_TYPES, SETTING_OPTION, LANGUAGES } from '../../constants'
 import { generateLotoTicket } from '../../utils'
+import { getVoiceList } from '../../utils/voices'
 import { Popup } from '../../components'
 
 import { Ticket, Caller } from './components'
@@ -13,17 +15,8 @@ import { Ticket, Caller } from './components'
 import styles from './Loto.module.scss'
 
 const THEME = 'THEME'
-const CALL_COUNT_DOWN = '5'
-
-const ROLE_TYPES = {
-  PLAYER: 'PLAYER',
-  CALLER: 'CALLER',
-}
-
-const SETTING_OPTION = {
-  SETTING_THEME: 'SETTING_THEME',
-  SETTING_CALLER: 'SETTING_CALLER',
-}
+const LANGUAGE = 'LANGUAGE'
+const CALL_COUNT_DOWN = '8'
 
 export const Loto = () => {
   const [lotoTicketFinal, setLotoTicketFinal] = useState<number[][]>([])
@@ -36,6 +29,7 @@ export const Loto = () => {
   const [roleType, setRoleType] = useState('')
   const [settingOptionSelected, setSettingOptionSelected] = useState('')
   const [isReload, setIsReload] = useState(false)
+  const [language, setLanguage] = useState(LANGUAGES.ENGLISH)
   const [termCallCountDownTimes, setTermCallCountDownTimes] =
     useState(CALL_COUNT_DOWN)
   const [callCountDownTimes, setCallCountDownTimes] = useState(CALL_COUNT_DOWN)
@@ -109,8 +103,10 @@ export const Loto = () => {
 
   const handleConfirmSettings = () => {
     const themeDefault = localStorage.getItem(THEME)
+    const languageDefault = localStorage.getItem(LANGUAGE)
 
     theme !== themeDefault && localStorage.setItem(THEME, theme)
+    language !== languageDefault && localStorage.setItem(LANGUAGE, language)
 
     termCallCountDownTimes !== CALL_COUNT_DOWN &&
       setCallCountDownTimes(termCallCountDownTimes)
@@ -124,18 +120,30 @@ export const Loto = () => {
     setIsShowRolePopup(false)
   }
 
+  const handleSelectLanguage = (language: string) => {
+    setLanguage(language)
+    localStorage.setItem(LANGUAGE, language)
+  }
+
   useEffect(() => {
     const themeDefault = localStorage.getItem(THEME)
+    const languageDefault = localStorage.getItem(LANGUAGE)
 
     handleReGenerateLotoTicket()
 
     if (themeDefault) {
-      localStorage.setItem(THEME, themeDefault)
-
       setTheme(themeDefault)
     } else {
       localStorage.setItem(THEME, 'color-1')
     }
+
+    if (languageDefault) {
+      setLanguage(languageDefault)
+    } else {
+      localStorage.setItem(LANGUAGE, LANGUAGES.ENGLISH)
+    }
+
+    getVoiceList()
   }, [])
 
   return (
@@ -164,6 +172,7 @@ export const Loto = () => {
       <div className={styles.body}>
         {isCaller && (
           <Caller
+            language={language}
             isReload={isReload}
             setIsReload={setIsReload}
             handleSelectNumber={handleSelectNumber}
@@ -322,14 +331,39 @@ export const Loto = () => {
 
             {settingOptionSelected === SETTING_OPTION.SETTING_CALLER && (
               <>
-                <input
-                  type='number'
-                  className={cls(styles.input)}
-                  value={termCallCountDownTimes}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setTermCallCountDownTimes(e.target.value)
-                  }
-                />
+                <div className={styles.inputWrapper}>
+                  <label htmlFor='countdown-input' className={styles.label}>
+                    Countdown times
+                  </label>
+                  <input
+                    id='countdown-input'
+                    type='number'
+                    className={cls(styles.input)}
+                    value={termCallCountDownTimes}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setTermCallCountDownTimes(e.target.value)
+                    }
+                  />
+                </div>
+
+                <div className={styles.languages}>
+                  {[
+                    { value: LANGUAGES.VIETNAM, label: 'Vietnamese' },
+                    { value: LANGUAGES.ENGLISH, label: 'English' },
+                  ].map((voice) => (
+                    <button
+                      key={voice.value}
+                      type='button'
+                      className={cls({
+                        [styles.button]: true,
+                        [styles.selected]: language === voice.value,
+                      })}
+                      onClick={() => handleSelectLanguage(voice.value)}
+                    >
+                      {voice.label}
+                    </button>
+                  ))}
+                </div>
               </>
             )}
           </div>

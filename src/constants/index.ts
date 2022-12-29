@@ -1,0 +1,14 @@
+export const ROLE_TYPES = {
+  PLAYER: 'PLAYER',
+  CALLER: 'CALLER',
+}
+
+export const SETTING_OPTION = {
+  SETTING_THEME: 'SETTING_THEME',
+  SETTING_CALLER: 'SETTING_CALLER',
+}
+
+export const LANGUAGES = {
+  ENGLISH: 'en-US',
+  VIETNAM: 'vi-VN',
+}
