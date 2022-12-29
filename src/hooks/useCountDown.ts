@@ -6,23 +6,33 @@ export const useCountDown = ({
   start?: number
 }): {
   timer: number
+  isPaused: boolean
   startTimer: (time: number) => void
+  pauseTimer: () => void
   stopTimer: () => void
 } => {
   const [timer, setTimer] = useState(start || 0)
+  const [isPaused, setIsPaused] = useState(false)
   const intervalRef = useRef<any>()
 
   const stopTimer = () => {
     intervalRef.current && clearInterval(intervalRef.current)
   }
 
+  const pauseTimer = () => {
+    setIsPaused(true)
+  }
+
   const startTimer = (time: number) => {
+    setIsPaused(false)
     setTimer(time)
   }
 
   useEffect(() => {
-    if (timer <= 0) return stopTimer()
+    if (timer <= 0 || isPaused) return stopTimer()
 
+    console.log('=== timer', timer)
+    console.log('=== isPaused', isPaused)
     intervalRef.current = setInterval(() => {
       setTimer((t) => t - 1)
     }, 1000)
@@ -30,7 +40,7 @@ export const useCountDown = ({
     return () => {
       intervalRef.current && clearInterval(intervalRef.current)
     }
-  }, [timer])
+  }, [timer, isPaused])
 
-  return { timer, startTimer, stopTimer }
+  return { timer, isPaused, startTimer, pauseTimer, stopTimer }
 }

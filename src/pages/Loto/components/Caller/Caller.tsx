@@ -16,20 +16,23 @@ export const Caller: React.FunctionComponent<{
   const [numbersToCall, setNumbersToCall] = useState<number[]>([])
   const [numberCalled, setNumberCalled] = useState<number[]>([])
   const [isStartedCall, setIsStartedCall] = useState(false)
-  const { timer, startTimer, stopTimer } = useCountDown({})
+  const { timer, startTimer, pauseTimer, stopTimer } = useCountDown({
+    start: callCountDownTimes,
+  })
 
   const handlePauseCall = () => {
+    pauseTimer()
     setIsStartedCall(false)
+  }
+
+  const handleStartCall = () => {
+    startTimer(timer)
+    setIsStartedCall(true)
   }
 
   const handleCallNewNumber = () => {
     const numbersToCallUpdated = [...numbersToCall]
 
-    if (!isStartedCall) {
-      startTimer(callCountDownTimes)
-    }
-
-    setIsStartedCall(true)
     const number = numbersToCallUpdated.shift()
 
     if (isStartedCall && number) {
@@ -64,9 +67,6 @@ export const Caller: React.FunctionComponent<{
 
     if (timer === 0) {
       startTimer(callCountDownTimes)
-    }
-
-    if (timer === callCountDownTimes) {
       handleCallNewNumber()
     }
   }, [isStartedCall, callCountDownTimes, timer])
@@ -79,7 +79,7 @@ export const Caller: React.FunctionComponent<{
         <button
           type='button'
           className={styles.button}
-          onClick={isStartedCall ? handlePauseCall : handleCallNewNumber}
+          onClick={isStartedCall ? handlePauseCall : handleStartCall}
         >
           {isStartedCall ? timer + 's' : <PlayIcon />}
         </button>
