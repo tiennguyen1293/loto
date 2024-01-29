@@ -15,6 +15,7 @@ export const Ticket: React.FunctionComponent<{
       className={cls({
         [styles.ticket]: true,
         [styles.haveCaller]: isCaller,
+        [styles[theme]]:true
       })}
     >
       {numbers.map((row: number[], rowIndex: number) => (
