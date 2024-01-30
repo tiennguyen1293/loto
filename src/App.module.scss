@@ -4,6 +4,8 @@
   position: relative;
   height: 100%;
   width: 100%;
-  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
+  background-color: var(--white);
 }
